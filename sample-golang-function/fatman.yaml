@@ -1,0 +1,7 @@
+name: golang-function
+owner_email: sample@example.com
+lang: golang
+
+git:
+  remote: https://github.com/TheRacetrack/plugin-go-job-type
+  directory: sample-golang-function

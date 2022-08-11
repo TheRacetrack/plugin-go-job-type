@@ -1,0 +1,11 @@
+// This is just a stub for IDE.
+// It gets replaced by user's Fatman code in wrappers/docker/golang/fatman-template.Dockerfile
+module stub
+
+go 1.16
+
+require (
+	github.com/go-stack/stack v1.8.1 // indirect
+	github.com/inconshreveable/log15 v0.0.0-20201112154412-8562bdadbbac
+	github.com/mattn/go-colorable v0.1.12 // indirect
+)

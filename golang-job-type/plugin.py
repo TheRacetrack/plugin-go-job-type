@@ -11,7 +11,7 @@ class Plugin:
         """
         return {
             'golang': (
-                f'{docker_registry_prefix}/golang:1.1.0', 
+                f'{docker_registry_prefix}/golang:{self.plugin_manifest.version}', 
                 self.plugin_dir / 'fatman-template.Dockerfile',
             ),
         }

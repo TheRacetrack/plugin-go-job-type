@@ -28,7 +28,7 @@ push-local: build
 	docker push localhost:5000/racetrack/fatman-base/golang:$(TAG)
 
 push-private-registry: build
-	dcoker login ${REGISTRY}
+	docker login ${REGISTRY}
 	docker tag ghcr.io/theracetrack/racetrack/fatman-base/golang:latest ${REGISTRY}/fatman-base/golang:$(TAG)
 	docker push ${REGISTRY}/fatman-base/golang:$(TAG)
 

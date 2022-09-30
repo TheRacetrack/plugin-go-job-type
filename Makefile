@@ -1,6 +1,4 @@
-TAG ?= 1.1.0
-
--include .env
+TAG ?= 1.2.0
 
 run:
 	cd golang-job-type/go_wrapper &&\
@@ -18,29 +16,9 @@ build:
 		-t ghcr.io/theracetrack/racetrack/fatman-base/golang:latest \
 		-f base.Dockerfile .
 
-push: build
-	docker login ghcr.io
-	docker tag ghcr.io/theracetrack/racetrack/fatman-base/golang:latest ghcr.io/theracetrack/racetrack/fatman-base/golang:$(TAG)
-	docker push ghcr.io/theracetrack/racetrack/fatman-base/golang:$(TAG)
-
-push-local: build
-	docker tag ghcr.io/theracetrack/racetrack/fatman-base/golang:latest localhost:5000/racetrack/fatman-base/golang:$(TAG)
-	docker push localhost:5000/racetrack/fatman-base/golang:$(TAG)
-
-push-private-registry: build
-	docker login ${REGISTRY}
-	docker tag ghcr.io/theracetrack/racetrack/fatman-base/golang:latest ${REGISTRY}/fatman-base/golang:$(TAG)
-	docker push ${REGISTRY}/fatman-base/golang:$(TAG)
-
-push-all: push push-local push-private-registry
-
-env-template:
-	cp -n .env.dist .env
-	@echo "Now fill in the .env file with your settings"
-
 bundle:
 	cd golang-job-type &&\
-	racetrack-plugin-bundler bundle
+	racetrack-plugin-bundler bundle --plugin-version=${TAG} --out=..
 
 deploy-sample:
 	racetrack deploy sample-golang-function docker

@@ -1,0 +1,3 @@
+go_wrapper/swaggerui/*.map
+Makefile
+go.sum

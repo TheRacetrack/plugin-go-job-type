@@ -1,4 +1,4 @@
-TAG ?= 1.2.0
+TAG ?= 1.2.1
 
 run:
 	cd golang-job-type/go_wrapper &&\

@@ -15,3 +15,5 @@ You can deploy sample Go job by running:
 ```bash
 racetrack deploy sample-golang-function <RACETRACK_URL>
 ```
+
+See [how to use Go job type](./docs/job_golang.md).

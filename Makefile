@@ -21,4 +21,4 @@ bundle:
 	racetrack plugin bundle --plugin-version=${TAG} --out=..
 
 deploy-sample:
-	racetrack deploy sample-golang-function docker
+	racetrack deploy sample-golang-function

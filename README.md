@@ -13,7 +13,7 @@ It's a language wrapper converting your code written in Go to a Fatman web servi
 ## Usage
 You can deploy sample Go job by running:
 ```bash
-racetrack deploy sample-golang-function <RACETRACK_URL>
+racetrack deploy sample-golang-function
 ```
 
 See [how to use Go job type](./docs/job_golang.md).

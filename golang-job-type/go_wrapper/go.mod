@@ -6,7 +6,7 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/inconshreveable/log15 v0.0.0-20201112154412-8562bdadbbac
 	github.com/pkg/errors v0.9.1
-	racetrack/fatman v0.0.0
+	racetrack/job v0.0.0
 )
 
-replace racetrack/fatman => ./handler
+replace racetrack/job => ./handler

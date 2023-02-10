@@ -1,13 +1,13 @@
 {
     "openapi": "3.0.2",
     "info": {
-        "title": "Fatman - {{.fatmanName}}",
-        "description": "Fatman Module wrapped in a REST server",
-        "version": "{{.fatmanVersion}}"
+        "title": "Job - {{.jobName}}",
+        "description": "Job Module wrapped in a REST server",
+        "version": "{{.jobVersion}}"
     },
     "servers": [
         {
-            "url": "/pub/fatman/{{.fatmanName}}/{{.fatmanVersion}}",
+            "url": "/pub/job/{{.jobName}}/{{.jobVersion}}",
             "description": "proxy prefixed path"
         },
         {

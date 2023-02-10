@@ -15,11 +15,11 @@ import (
 func WrapAndServe(entrypoint EntrypointHandler) error {
 	performHandler := buildHandler(entrypoint)
 
-	fatmanName := os.Getenv("FATMAN_NAME")
+	jobName := os.Getenv("JOB_NAME")
 	// Serve endpoints at raw path (to facilitate debugging) and prefixed path (when accessed through PUB).
-	// Accept any version so that fatman can be called by its many version names ("latest", "1.x").
+	// Accept any version so that job can be called by its many version names ("latest", "1.x").
 	baseUrls := []string{
-		fmt.Sprintf("/pub/fatman/%s/{version}", fatmanName),
+		fmt.Sprintf("/pub/job/%s/{version}", jobName),
 		"",
 	}
 

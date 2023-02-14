@@ -2,7 +2,7 @@
 
 This is a plugin for [Racetrack](https://github.com/TheRacetrack/racetrack)
 which extends it with Golang Job Type.
-It's a language wrapper converting your code written in Go to a Fatman web service.
+It's a language wrapper converting your code written in Go to a Job web service.
 
 ## Setup
 1. Install `racetrack` client and generate ZIP plugin by running `make bundle`.

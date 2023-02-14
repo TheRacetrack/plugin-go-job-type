@@ -1,7 +1,7 @@
 package main
 
 import (
-	handler "racetrack/fatman"
+	handler "racetrack/job"
 )
 
 func main() {

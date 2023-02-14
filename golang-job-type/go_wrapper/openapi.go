@@ -9,16 +9,16 @@ import (
 )
 
 func MountOpenApi(router *mux.Router, baseUrl string) {
-	fatmanName := os.Getenv("FATMAN_NAME")
-	fatmanVersion := os.Getenv("FATMAN_VERSION")
+	jobName := os.Getenv("JOB_NAME")
+	jobVersion := os.Getenv("JOB_VERSION")
 
 	router.HandleFunc(baseUrl+"/static/openapi.json", func(w http.ResponseWriter, r *http.Request) {
 		tmplt := template.New("openapi.json")
 		tmplt, _ = tmplt.ParseFiles("./swaggerui/openapi.json")
 
 		context := map[string]string{
-			"fatmanName":    fatmanName,
-			"fatmanVersion": fatmanVersion,
+			"jobName":    jobName,
+			"jobVersion": jobVersion,
 		}
 		tmplt.Execute(w, context)
 	})

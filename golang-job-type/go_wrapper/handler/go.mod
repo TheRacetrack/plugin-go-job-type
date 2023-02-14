@@ -1,5 +1,5 @@
 // This is just a stub for IDE.
-// It gets replaced by user's Fatman code in wrappers/docker/golang/fatman-template.Dockerfile
+// It gets replaced by user's Job code in wrappers/docker/golang/job-template.Dockerfile
 module stub
 
 go 1.16

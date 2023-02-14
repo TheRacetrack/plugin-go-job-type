@@ -9,8 +9,8 @@ import (
 
 type HealthResponse struct {
 	Service                    string `json:"service"`
-	FatmanName                 string `json:"fatman_name"`
-	FatmanVersion              string `json:"fatman_version"`
+	JobName                 string `json:"job_name"`
+	JobVersion              string `json:"job_version"`
 	GitVersion                 string `json:"git_version"`
 	DeployedByRacetrackVersion string `json:"deployed_by_racetrack_version"`
 	Status                     string `json:"status"`
@@ -27,11 +27,11 @@ type ReadyResponse struct {
 }
 
 func HealthHandler(w http.ResponseWriter, req *http.Request) {
-	deploymentTimestamp, _ := strconv.Atoi(os.Getenv("FATMAN_DEPLOYMENT_TIMESTAMP"))
+	deploymentTimestamp, _ := strconv.Atoi(os.Getenv("JOB_DEPLOYMENT_TIMESTAMP"))
 	output := &HealthResponse{
-		Service:                    "fatman",
-		FatmanName:                 os.Getenv("FATMAN_NAME"),
-		FatmanVersion:              os.Getenv("FATMAN_VERSION"),
+		Service:                    "job",
+		JobName:                 os.Getenv("JOB_NAME"),
+		JobVersion:              os.Getenv("JOB_VERSION"),
 		GitVersion:                 os.Getenv("GIT_VERSION"),
 		DeployedByRacetrackVersion: os.Getenv("DEPLOYED_BY_RACETRACK_VERSION"),
 		DeploymentTimestamp:        deploymentTimestamp,
@@ -43,7 +43,7 @@ func HealthHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func LiveHandler(w http.ResponseWriter, req *http.Request) {
-	deploymentTimestamp, _ := strconv.Atoi(os.Getenv("FATMAN_DEPLOYMENT_TIMESTAMP"))
+	deploymentTimestamp, _ := strconv.Atoi(os.Getenv("JOB_DEPLOYMENT_TIMESTAMP"))
 	output := &LiveResponse{
 		Status:              "live",
 		DeploymentTimestamp: deploymentTimestamp,

@@ -5,14 +5,14 @@ import (
 	"os"
 	"text/template"
 
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 )
 
-func MountOpenApi(router *mux.Router, baseUrl string) {
+func MountOpenApi(router *gin.Engine, baseUrl string) {
 	jobName := os.Getenv("JOB_NAME")
 	jobVersion := os.Getenv("JOB_VERSION")
 
-	router.HandleFunc(baseUrl+"/static/openapi.json", func(w http.ResponseWriter, r *http.Request) {
+	router.Any(baseUrl+"/static/openapi.json", func(c *gin.Context) {
 		tmplt := template.New("openapi.json")
 		tmplt, _ = tmplt.ParseFiles("./swaggerui/openapi.json")
 
@@ -20,18 +20,17 @@ func MountOpenApi(router *mux.Router, baseUrl string) {
 			"jobName":    jobName,
 			"jobVersion": jobVersion,
 		}
-		tmplt.Execute(w, context)
+		tmplt.Execute(c.Writer, context)
 	})
-	router.HandleFunc(baseUrl+"/static/{filename}", func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		filename := vars["filename"]
-		http.ServeFile(w, r, "./swaggerui/"+filename)
+	router.Any(baseUrl+"/static/{filename}", func(c *gin.Context) {
+		filename := c.Param("filename")
+		http.ServeFile(c.Writer, c.Request, "./swaggerui/"+filename)
 	})
 
-	router.HandleFunc(baseUrl+"", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, r.URL.Path+"/", http.StatusTemporaryRedirect)
+	router.Any(baseUrl+"", func(c *gin.Context) {
+		http.Redirect(c.Writer, c.Request, c.Request.URL.Path+"/", http.StatusTemporaryRedirect)
 	})
-	router.HandleFunc(baseUrl+"/", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./swaggerui/index.html")
+	router.Any(baseUrl+"/", func(c *gin.Context) {
+		http.ServeFile(c.Writer, c.Request, "./swaggerui/index.html")
 	})
 }

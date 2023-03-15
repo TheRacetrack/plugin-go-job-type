@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 	log "github.com/inconshreveable/log15"
 	"github.com/pkg/errors"
 )
@@ -22,15 +22,17 @@ func WrapAndServe(entrypoint EntrypointHandler) error {
 		fmt.Sprintf("/pub/job/%s/{version}", jobName),
 		"",
 	}
-
-	router := mux.NewRouter()
+    
+    //gin.SetMode(gin.ReleaseMode) //Hide debug routings
+	router := gin.Default()
 
 	for _, baseUrl := range baseUrls {
 
-		router.HandleFunc(baseUrl+"/api/v1/perform", performHandler)
-		router.HandleFunc(baseUrl+"/health", HealthHandler)
-		router.HandleFunc(baseUrl+"/live", LiveHandler)
-		router.HandleFunc(baseUrl+"/ready", ReadyHandler)
+		router.GET(baseUrl+"/api/v1/perform", performHandler)
+        router.GET(baseUrl+"/health", HealthHandler)
+        router.GET(baseUrl+"/live", LiveHandler)
+        router.GET(baseUrl+"/ready", ReadyHandler)
+        router.GET(baseUrl+"/metrics", MetricHandler())
 		MountOpenApi(router, baseUrl)
 	}
 
@@ -51,7 +53,7 @@ func WrapAndServe(entrypoint EntrypointHandler) error {
 		"listenAddress": listenAddress,
 		"baseUrls":      baseUrls,
 	})
-	if err := http.ListenAndServe(listenAddress, router); err != nil {
+	if err := router.Run(listenAddress); err != nil {
 		log.Error("Serving http", log.Ctx{"error": err})
 		return errors.Wrap(err, "Failed to serve")
 	}
@@ -60,24 +62,30 @@ func WrapAndServe(entrypoint EntrypointHandler) error {
 
 type EntrypointHandler func(input map[string]interface{}) (interface{}, error)
 
-func buildHandler(entrypointHandler EntrypointHandler) func(http.ResponseWriter, *http.Request) {
-	return func(w http.ResponseWriter, req *http.Request) {
+func buildHandler(entrypointHandler EntrypointHandler) func(c *gin.Context) {
+	return func(c *gin.Context) {
 		log.Debug("Perform request received")
 
 		var input map[string]interface{}
-		err := json.NewDecoder(req.Body).Decode(&input)
+		err := json.NewDecoder(c.Request.Body).Decode(&input)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			http.Error(c.Writer, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		output, err := entrypointHandler(input)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(output)
+		c.Writer.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(c.Writer).Encode(output)
 	}
+}
+
+func wrapHandler(h http.Handler) gin.HandlerFunc {
+    return func(c *gin.Context) {
+        h.ServeHTTP(c.Writer, c.Request)
+    }
 }

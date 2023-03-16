@@ -24,7 +24,8 @@ func WrapAndServe(entrypoint EntrypointHandler) error {
 	}
     
     //gin.SetMode(gin.ReleaseMode) //Hide debug routings
-	router := gin.Default()
+	router := gin.New()
+    router.Use(gin.Recovery())
 
 	for _, baseUrl := range baseUrls {
 
@@ -36,17 +37,7 @@ func WrapAndServe(entrypoint EntrypointHandler) error {
 		MountOpenApi(router, baseUrl)
 	}
 
-	loggingMiddleware := func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			log.Info("Request", log.Ctx{
-				"method": r.Method,
-				"uri":    r.RequestURI,
-				"ip":     r.RemoteAddr,
-			})
-			next.ServeHTTP(w, r)
-		})
-	}
-	router.Use(loggingMiddleware)
+	router.Use(gin.Logger())
 
 	listenAddress := "0.0.0.0:7000"
 	log.Info("Listening on", log.Ctx{

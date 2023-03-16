@@ -30,7 +30,7 @@ func MountOpenApi(router *gin.Engine, baseUrl string) {
 	router.Any(baseUrl+"", func(c *gin.Context) {
 		http.Redirect(c.Writer, c.Request, c.Request.URL.Path+"/", http.StatusTemporaryRedirect)
 	})
-	router.Any(baseUrl+"/", func(c *gin.Context) {
+	router.Any(baseUrl+"/index.html", func(c *gin.Context) {
 		http.ServeFile(c.Writer, c.Request, "./swaggerui/index.html")
 	})
 }

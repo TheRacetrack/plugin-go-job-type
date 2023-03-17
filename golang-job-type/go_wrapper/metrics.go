@@ -1,33 +1,56 @@
 package main
 
 import (
-        "time"
-
         "github.com/gin-gonic/gin"
         "github.com/prometheus/client_golang/prometheus"
         "github.com/prometheus/client_golang/prometheus/promauto"
         "github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-func recordMetrics() {
-        go func() {
-                for {
-                        opsProcessed.Inc()
-                        time.Sleep(2 * time.Second)
-                }
-        }()
-}
+var (
+        metricRequestInternalErrors = promauto.NewCounter(
+            prometheus.CounterOpts{
+                Name: "request_internal_errors",
+                Help: "Number of server errors when calling a Job"})
+)
 
 var (
-        opsProcessed = promauto.NewCounter(prometheus.CounterOpts{
-                Name: "myapp_processed_ops_total",
-                Help: "The total number of processed events",
-        })
+        metricRequestsStarted = promauto.NewCounter(
+            prometheus.CounterOpts{
+                Name: "requests_started",
+                Help: "Total number of started requests calling Job (may not be finished yet)"})
+)
+
+var ( 
+        metricRequestsDone = promauto.NewCounter(
+            prometheus.CounterOpts{
+                Name: "requests_done",
+                Help: "Total number of finished requests calling Job (processed and done)"})
+)
+
+var (
+        metricEndpointRequestsStarted = promauto.NewCounter(
+            prometheus.CounterOpts{
+                Name: "endpoint_requests_started",
+                Help: "Total number of started requests calling Job (may not be finished yet)"})
+)
+
+var (
+        metricRequestDuration = promauto.NewHistogram(
+            prometheus.HistogramOpts{
+                Name: "request_duration",
+                Help: "Duration of model call",
+                Buckets: []float64{0.001, 0.0025, 0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1.0, 2.5, 5.0, 7.5, 10.0, 25.0, 50.0, 75.0, 100.0, 250.0, 500.0, 750.0, 1000.0}})//+Inf is implicit
+)
+
+var (
+        metricLastCallTimestamp = promauto.NewGauge(
+            prometheus.GaugeOpts{
+                Name: "last_call_timestamp",
+                Help: "Timestamp (in seconds) of the last request calling Job"})
 )
 
 func MetricHandler() gin.HandlerFunc {
-    recordMetrics()
-
     handler := promhttp.Handler()
 
     return func(context *gin.Context) {

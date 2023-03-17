@@ -76,6 +76,26 @@
                 }
             }
         },
+        "/metrics": {
+            "get": {
+                "tags": [
+                    "root"
+                ],
+                "summary": " Metrics",
+                "description": "Endpoint for prometheus metrics",
+                "operationId": "_metrics_metrics_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/perform": {
             "post": {
                 "tags": [

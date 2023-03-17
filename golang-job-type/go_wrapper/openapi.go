@@ -22,15 +22,12 @@ func MountOpenApi(router *gin.Engine, baseUrl string) {
 		}
 		tmplt.Execute(c.Writer, context)
 	})
-	router.Any(baseUrl+"/static/{filename}", func(c *gin.Context) {
+    router.Any(baseUrl+"/static/:filename", func(c *gin.Context) {
 		filename := c.Param("filename")
 		http.ServeFile(c.Writer, c.Request, "./swaggerui/"+filename)
 	})
 
-	router.Any(baseUrl+"", func(c *gin.Context) {
-		http.Redirect(c.Writer, c.Request, c.Request.URL.Path+"/", http.StatusTemporaryRedirect)
-	})
-	router.Any(baseUrl+"/index.html", func(c *gin.Context) {
+	router.Any(baseUrl+"/", func(c *gin.Context) {
 		http.ServeFile(c.Writer, c.Request, "./swaggerui/index.html")
 	})
 }

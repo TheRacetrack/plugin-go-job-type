@@ -19,11 +19,11 @@ func WrapAndServe(entrypoint EntrypointHandler) error {
 	// Serve endpoints at raw path (to facilitate debugging) and prefixed path (when accessed through PUB).
 	// Accept any version so that job can be called by its many version names ("latest", "1.x").
 	baseUrls := []string{
-		fmt.Sprintf("/pub/job/%s/{version}", jobName),
+		fmt.Sprintf("/pub/job/%s/:version", jobName),
 		"",
 	}
     
-    //gin.SetMode(gin.ReleaseMode) //Hide debug routings
+    gin.SetMode(gin.ReleaseMode) //Hide debug routings
 	router := gin.New()
     router.Use(gin.Recovery())
 

@@ -2,15 +2,16 @@ package main
 
 import (
 	"encoding/json"
-	"net/http"
 	"os"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 type HealthResponse struct {
 	Service                    string `json:"service"`
-	JobName                 string `json:"job_name"`
-	JobVersion              string `json:"job_version"`
+	JobName                    string `json:"job_name"`
+	JobVersion                 string `json:"job_version"`
 	GitVersion                 string `json:"git_version"`
 	DeployedByRacetrackVersion string `json:"deployed_by_racetrack_version"`
 	Status                     string `json:"status"`
@@ -26,36 +27,36 @@ type ReadyResponse struct {
 	Status string `json:"status"`
 }
 
-func HealthHandler(w http.ResponseWriter, req *http.Request) {
+func HealthHandler(c *gin.Context) {
 	deploymentTimestamp, _ := strconv.Atoi(os.Getenv("JOB_DEPLOYMENT_TIMESTAMP"))
 	output := &HealthResponse{
 		Service:                    "job",
-		JobName:                 os.Getenv("JOB_NAME"),
-		JobVersion:              os.Getenv("JOB_VERSION"),
+		JobName:                    os.Getenv("JOB_NAME"),
+		JobVersion:                 os.Getenv("JOB_VERSION"),
 		GitVersion:                 os.Getenv("GIT_VERSION"),
 		DeployedByRacetrackVersion: os.Getenv("DEPLOYED_BY_RACETRACK_VERSION"),
 		DeploymentTimestamp:        deploymentTimestamp,
 		Status:                     "pass",
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(output)
+	c.Writer.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(c.Writer).Encode(output)
 }
 
-func LiveHandler(w http.ResponseWriter, req *http.Request) {
+func LiveHandler(c *gin.Context) {
 	deploymentTimestamp, _ := strconv.Atoi(os.Getenv("JOB_DEPLOYMENT_TIMESTAMP"))
 	output := &LiveResponse{
 		Status:              "live",
 		DeploymentTimestamp: deploymentTimestamp,
 	}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(output)
+	c.Writer.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(c.Writer).Encode(output)
 }
 
-func ReadyHandler(w http.ResponseWriter, req *http.Request) {
+func ReadyHandler(c *gin.Context) {
 	output := &ReadyResponse{
 		Status: "ready",
 	}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(output)
+	c.Writer.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(c.Writer).Encode(output)
 }

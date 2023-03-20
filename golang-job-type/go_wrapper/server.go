@@ -22,18 +22,18 @@ func WrapAndServe(entrypoint EntrypointHandler) error {
 		fmt.Sprintf("/pub/job/%s/:version", jobName),
 		"",
 	}
-    
-    gin.SetMode(gin.ReleaseMode) //Hide debug routings
+
+	gin.SetMode(gin.ReleaseMode) //Hide debug routings
 	router := gin.New()
-    router.Use(gin.Recovery())
+	router.Use(gin.Recovery())
 
 	for _, baseUrl := range baseUrls {
 
 		router.GET(baseUrl+"/api/v1/perform", performHandler)
-        router.GET(baseUrl+"/health", HealthHandler)
-        router.GET(baseUrl+"/live", LiveHandler)
-        router.GET(baseUrl+"/ready", ReadyHandler)
-        router.GET(baseUrl+"/metrics", MetricHandler())
+		router.GET(baseUrl+"/health", HealthHandler)
+		router.GET(baseUrl+"/live", LiveHandler)
+		router.GET(baseUrl+"/ready", ReadyHandler)
+		router.GET(baseUrl+"/metrics", MetricHandler())
 		MountOpenApi(router, baseUrl)
 	}
 
@@ -76,7 +76,7 @@ func buildHandler(entrypointHandler EntrypointHandler) func(c *gin.Context) {
 }
 
 func wrapHandler(h http.Handler) gin.HandlerFunc {
-    return func(c *gin.Context) {
-        h.ServeHTTP(c.Writer, c.Request)
-    }
+	return func(c *gin.Context) {
+		h.ServeHTTP(c.Writer, c.Request)
+	}
 }

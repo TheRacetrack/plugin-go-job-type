@@ -5,13 +5,13 @@ import (
 	"os"
 	"strconv"
 
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 )
 
 type HealthResponse struct {
 	Service                    string `json:"service"`
-	JobName                 string `json:"job_name"`
-	JobVersion              string `json:"job_version"`
+	JobName                    string `json:"job_name"`
+	JobVersion                 string `json:"job_version"`
 	GitVersion                 string `json:"git_version"`
 	DeployedByRacetrackVersion string `json:"deployed_by_racetrack_version"`
 	Status                     string `json:"status"`
@@ -31,8 +31,8 @@ func HealthHandler(c *gin.Context) {
 	deploymentTimestamp, _ := strconv.Atoi(os.Getenv("JOB_DEPLOYMENT_TIMESTAMP"))
 	output := &HealthResponse{
 		Service:                    "job",
-		JobName:                 os.Getenv("JOB_NAME"),
-		JobVersion:              os.Getenv("JOB_VERSION"),
+		JobName:                    os.Getenv("JOB_NAME"),
+		JobVersion:                 os.Getenv("JOB_VERSION"),
 		GitVersion:                 os.Getenv("GIT_VERSION"),
 		DeployedByRacetrackVersion: os.Getenv("DEPLOYED_BY_RACETRACK_VERSION"),
 		DeploymentTimestamp:        deploymentTimestamp,

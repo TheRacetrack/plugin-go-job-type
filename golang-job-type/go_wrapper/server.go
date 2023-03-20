@@ -29,7 +29,7 @@ func WrapAndServe(entrypoint EntrypointHandler) error {
 
 	for _, baseUrl := range baseUrls {
 
-		router.GET(baseUrl+"/api/v1/perform", performHandler)
+		router.POST(baseUrl+"/api/v1/perform", performHandler)
 		router.GET(baseUrl+"/health", HealthHandler)
 		router.GET(baseUrl+"/live", LiveHandler)
 		router.GET(baseUrl+"/ready", ReadyHandler)

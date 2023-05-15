@@ -14,6 +14,11 @@ COPY "{{ manifest.golang.gomod }}" /src/job/
 RUN cd /src/job && go mod download
 {% endif %}
 
+{% if manifest.jobtype_extra.gomod %}
+COPY "{{ manifest.jobtype_extra.gomod }}" /src/job/
+RUN cd /src/job && go mod download
+{% endif %}
+
 COPY . /src/go_wrapper/handler/
 RUN chmod -R a+rw /src/go_wrapper && cd /src/go_wrapper/ && go mod download
 

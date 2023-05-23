@@ -9,13 +9,8 @@ RUN apk add \
     {{ manifest.system_dependencies | join(' ') }}
 {% endif %}
 
-{% if manifest.golang.gomod %}
-COPY "{{ manifest.golang.gomod }}" /src/job/
-RUN cd /src/job && go mod download
-{% endif %}
-
-{% if manifest.jobtype_extra.gomod %}
-COPY "{{ manifest.jobtype_extra.gomod }}" /src/job/
+{% if manifest.get_jobtype_extra().gomod %}
+COPY "{{ manifest.get_jobtype_extra().gomod }}" /src/job/
 RUN cd /src/job && go mod download
 {% endif %}
 

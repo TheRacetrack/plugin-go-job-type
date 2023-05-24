@@ -1,6 +1,7 @@
 name: golang-function
 owner_email: sample@example.com
-lang: golang:latest
+jobtype: golang:latest
+version: 0.0.2
 
 git:
   remote: https://github.com/TheRacetrack/plugin-go-job-type

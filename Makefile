@@ -10,7 +10,11 @@ perform:
 
 bundle:
 	cd src &&\
-	racetrack plugin bundle --plugin-version=${TAG} --out=..
+	racetrack plugin bundle --out=.. &&\
+	racetrack plugin bundle --out=.. --out-filename=latest.zip
+
+install:
+	racetrack plugin install --replace latest.zip
 
 deploy-sample:
 	racetrack deploy sample

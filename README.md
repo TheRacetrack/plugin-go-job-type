@@ -13,7 +13,7 @@ It's a language wrapper converting your code written in Go to a Job web service.
 ## Usage
 You can deploy sample Go job by running:
 ```bash
-racetrack deploy sample-golang-function
+racetrack deploy sample
 ```
 
 See [how to use Go job type](./docs/job_golang.md).

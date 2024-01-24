@@ -1,4 +1,13 @@
-FROM {{ base_image }}
+FROM golang:1.20-alpine
+
+WORKDIR /src/go_wrapper
+
+COPY --from=jobtype go_wrapper/. /src/go_wrapper/
+RUN go get ./... && rm -rf /src/go_wrapper/handler
+
+CMD ./go_wrapper < /dev/null
+LABEL racetrack-component="job"
+
 
 {% for env_key, env_value in env_vars.items() %}
 ENV {{ env_key }} "{{ env_value }}"
